@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: "groovy"
+apply plugin: "application"
+
+group = "org.sgates.cli"
+version = "0.1.0"
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
+}
+
+apply plugin: 'eu.appsatori.fatjar'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.2.1'
+}
+
+mainClassName = "org.sgates.cli.Main"
+
+fatJar {
+    manifest {
+        attributes(
+                "Implementation-Title": "CLI",
+                "Implementation-Version": version,
+                'Main-Class': 'org.sgates.cli.Main'
+        )
+    }
+}
