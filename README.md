@@ -16,6 +16,13 @@ If you don't want a fat jar, just run
 
 If you prefer to use your own version of gradle, use any of the above commants but substitute "gradle" for "./gradlew".
 
+Running Unit/Integration tests
+---------------------------------------------------
+
+    ./gradlew test
+
+Test reports are located in **build/reports/tests/index.html**
+
 Running the game
 ----------------------------------------------------
 After building the jar, you can run with the java command line:
