@@ -24,6 +24,28 @@ class Directory extends FileSystemNode{
         name
     }
 
+    public File getFile(List<String> pathParts){
+        FileSystemNode existingNode = contents.find { it.name == pathParts[0] }
+
+        if(pathParts.size() == 1) {
+            if (existingNode) {
+                if (existingNode instanceof File) {
+                    return existingNode as File
+                } else {
+                    throw new Exception("Existing node is not a directory!")
+                }
+            } else{
+                throw new Exception("File not found!")
+            }
+        } else{
+            if (existingNode instanceof File) {
+                return (existingNode as File).getFile(pathParts[1..-1])
+            } else {
+                throw new Exception("${pathParts[0]} is not a file!")
+            }
+        }
+    }
+
     public Directory getDirectory(List<String> pathParts){
         FileSystemNode existingNode = contents.find { it.name == pathParts[0] }
 
@@ -34,8 +56,9 @@ class Directory extends FileSystemNode{
                 } else {
                     throw new Exception("Existing node is not a directory!")
                 }
-            } else{}
-            throw new Exception("Directory not found!")
+            } else{
+                throw new Exception("Directory not found!")
+            }
         } else{
             if (existingNode instanceof Directory) {
                 return (existingNode as Directory).getDirectory(pathParts[1..-1])

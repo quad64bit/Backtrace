@@ -127,4 +127,15 @@ class DirectoryTests extends Specification {
         then: "path should be as expected"
             path == "someFolder/alpha/beta/gamma/stuff"
     }
+
+    def "getting a file from depth 0 should return a file"(){
+        given: "a file in level 0"
+            dir.touch(["someFile.txt"])
+        when: "the file is retrieved"
+            File file = dir.getFile(["someFile.txt"])
+        then: "The file shouldn't be null"
+            file
+        and: "and the file should have the expected name"
+            file.name == "someFile.txt"
+    }
 }
