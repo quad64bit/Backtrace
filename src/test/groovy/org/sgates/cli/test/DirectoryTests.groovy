@@ -96,4 +96,35 @@ class DirectoryTests extends Specification {
         and: "it's great great grand parent should be dir"
             file.parent.parent.parent.parent == dir
     }
+
+    def "getting a directory at level 0 should return the expected directory"(){
+        given: "a nested directory"
+            dir.mkdir(["stuff"])
+        when: "we ask to get said directory"
+            Directory loadedDir = dir.getDirectory(["stuff"])
+        then: "loadedDir shouldn't be null"
+            loadedDir
+        and: "it should have the correct name"
+            loadedDir.name == "stuff"
+    }
+
+    def "getting a directory at level n should return the expected directory"(){
+        given: "a nested directory"
+            dir.mkdir(["alpha", "beta", "gamma", "stuff"])
+        when: "we ask to get said directory"
+            Directory loadedDir = dir.getDirectory(["alpha", "beta", "gamma", "stuff"])
+        then: "loaded dir shouldn't be null"
+            loadedDir
+        and: "It should have the correct name"
+            loadedDir.name == "stuff"
+    }
+
+    def "path on a nested folder should return the expected path"(){
+        given: "a nested directory"
+            Directory nestedDir = dir.mkdir(["alpha", "beta", "gamma", "stuff"])
+        when: "we ask for the path on said directory"
+            String path = nestedDir.getPath()
+        then: "path should be as expected"
+            path == "someFolder/alpha/beta/gamma/stuff"
+    }
 }

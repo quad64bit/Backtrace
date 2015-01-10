@@ -13,7 +13,7 @@ class FileSystem {
     Directory pwd = root
 
     Directory createDir(String path){
-        def pathParts = FST.getPathParts(path)
+        List<String> pathParts = FST.getPathParts(path)
         if(pathParts[0] == "/"){
             root.mkdir(pathParts[1..-1])
         } else{
@@ -22,11 +22,26 @@ class FileSystem {
     }
 
     Directory getDirectory(String path){
-
+        List<String> pathParts = FST.getPathParts(path)
+        switch(path){
+            case "/": return root; break
+            case ".": return pwd; break
+            default:
+                if(pathParts[0] == "/"){
+                    return root.getDirectory(pathParts[1..-1])
+                } else{
+                    return pwd.getDirectory(pathParts)
+                }
+        }
     }
 
     File createFile(String path){
-
+        List<String> pathParts = FST.getPathParts(path)
+        if(pathParts[0] == "/"){
+            root.touch(pathParts[1..-1])
+        } else{
+            pwd.touch(pathParts)
+        }
     }
 
     File getFile(String path){
@@ -41,6 +56,4 @@ class FileSystem {
     List<FileSystemNode> findByName(String name){
 
     }
-
-
 }

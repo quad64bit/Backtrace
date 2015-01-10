@@ -17,6 +17,34 @@ class Directory extends FileSystemNode{
         contents << node
     }
 
+    public String getPath(){
+        if(parent){
+            return parent.getPath()+"/$name"
+        }
+        name
+    }
+
+    public Directory getDirectory(List<String> pathParts){
+        FileSystemNode existingNode = contents.find { it.name == pathParts[0] }
+
+        if(pathParts.size() == 1) {
+            if (existingNode) {
+                if (existingNode instanceof Directory) {
+                    return existingNode as Directory
+                } else {
+                    throw new Exception("Existing node is not a directory!")
+                }
+            } else{}
+            throw new Exception("Directory not found!")
+        } else{
+            if (existingNode instanceof Directory) {
+                return (existingNode as Directory).getDirectory(pathParts[1..-1])
+            } else {
+                throw new Exception("${pathParts[0]} is not a directory!")
+            }
+        }
+    }
+
     public File touch(List<String> pathParts){
         FileSystemNode existingNode = contents.find { it.name == pathParts[0] }
         if(pathParts.size() == 1){
