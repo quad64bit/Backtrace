@@ -16,6 +16,7 @@ class CommandRegistry {
         commands.each{ name, Command command ->
             command.kernel = kernel
         }
+        this
     }
 
     Command getCommandByName(String name){

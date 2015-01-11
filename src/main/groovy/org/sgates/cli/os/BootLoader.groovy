@@ -1,26 +1,29 @@
 package org.sgates.cli.os
 
+import org.sgates.cli.parsing.CommandParser
+
 /**
  * Created by sgates on 1/6/15.
  */
 class BootLoader {
     static Kernel boot(){
-        CommandRegistry commandRegistry = loadCommands()
-        FileSystem fileSystem = loadFileSystem()
-        Kernel kernel = new Kernel(
-                commandRegistry: commandRegistry,
-                fileSystem: fileSystem
-        )
+        Kernel kernel = new Kernel()
+        CommandRegistry commandRegistry = initCommandRegistry(kernel)
+        kernel.fileSystem = loadFileSystem()
+        kernel.commandRegistry = commandRegistry
+        kernel.commandParser = initCommandParser(commandRegistry)
         kernel
     }
 
-    private static CommandRegistry loadCommands(){
-        CommandRegistry commandRegistry = new CommandRegistry()
-        commandRegistry
+    private static FileSystem loadFileSystem(){
+        new FileSystem()
     }
 
-    private static void loadFileSystem(){
-        FileSystem fileSystem = new FileSystem()
-        fileSystem
+    private static CommandRegistry initCommandRegistry(Kernel kernel){
+        new CommandRegistry(kernel: kernel).init()
+    }
+
+    private static initCommandParser(CommandRegistry commandRegistry){
+        new CommandParser(commandRegistry:commandRegistry)
     }
 }
