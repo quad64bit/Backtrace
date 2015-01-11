@@ -1,19 +1,23 @@
 package org.sgates.cli
 
+import org.sgates.cli.datastructure.Command
 import org.sgates.cli.os.Kernel
 import org.sgates.cli.util.StringTools as ST
 
 class Console{
     Kernel kernel
 
+    boolean skipBoot = true
+
     void display(){
         def reader = getReader()
-        simulateBootProcess()
+        bootProcess()
 
         while(true){
             print getCommandPrompt()
             String input = reader.readLine()
-            echo input
+            Command command = kernel.commandParser.getCommand(input)
+            command.execute()
         }
     }
 
@@ -21,7 +25,8 @@ class Console{
         new BufferedReader(new InputStreamReader(System.in))
     }
 
-    private void simulateBootProcess(){
+    private void bootProcess(){
+        if(skipBoot){ return }
         ST.delayedPrint(['> Bootloader initializing'] + getDots(ran()))
         println()
         ST.delayedPrint(['> Scanning for devices on IO Subsystem'] + getDots(ran()))

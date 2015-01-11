@@ -1,6 +1,7 @@
 package org.sgates.cli;
 
 import org.sgates.cli.os.BootLoader;
+import org.sgates.cli.os.Kernel;
 
 /**
  * Created by sgates on 1/6/15.

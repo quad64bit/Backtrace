@@ -1,7 +1,7 @@
 package org.sgates.cli.os
 
 import org.sgates.cli.datastructure.Directory
-import org.sgates.cli.datastructure.FileSystemNode
+import org.sgates.cli.datastructure.File
 import org.sgates.cli.util.FileSystemTools as FST
 
 /**
@@ -9,10 +9,23 @@ import org.sgates.cli.util.FileSystemTools as FST
  */
 class FileSystem {
     long capacity
-    Directory root = new Directory(name:"/")
-    Directory pwd = root
+    Directory root
+    Directory pwd
 
-    Directory createDir(String path){
+    {
+        root = new Directory(name:"/")
+        pwd = root
+
+        root.mkdir(["testDir 1"])
+        root.mkdir(["testDir 2"])
+        root.mkdir(["testDir 3"])
+
+        root.touch(["testFile1"])
+        root.touch(["testFile2"])
+        root.touch(["testFile3"])
+    }
+
+    Directory createDirectory(String path){
         List<String> pathParts = FST.getPathParts(path)
         if(pathParts[0] == "/"){
             root.mkdir(pathParts[1..-1])
@@ -45,15 +58,21 @@ class FileSystem {
     }
 
     File getFile(String path){
-
+        List<String> pathParts = FST.getPathParts(path)
+        if(pathParts[0] == "/"){
+            root.getFile(pathParts[1..-1])
+        } else{
+            pwd.getFile(pathParts)
+        }
     }
 
     //delete a file or a directory
     boolean deleteNode(String path){
-
-    }
-
-    List<FileSystemNode> findByName(String name){
-
+        List<String> pathParts = FST.getPathParts(path)
+        if(pathParts[0] == "/"){
+            root.deleteNode(pathParts[1..-1])
+        } else{
+            pwd.deleteNode(pathParts)
+        }
     }
 }

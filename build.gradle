@@ -28,6 +28,10 @@ dependencies {
 
 mainClassName = "org.sgates.cli.Main"
 
+run {
+    standardInput = System.in
+}
+
 fatJar {
     manifest {
         attributes(

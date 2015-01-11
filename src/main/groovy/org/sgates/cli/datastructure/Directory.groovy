@@ -24,6 +24,28 @@ class Directory extends FileSystemNode{
         name
     }
 
+    public void deleteNode(List<String> pathParts){
+        FileSystemNode existingNode = contents.find { it.name == pathParts[0] }
+
+        if(pathParts.size() == 1){
+            if(existingNode){
+                contents.remove(existingNode)
+            } else{
+                throw new Exception("File not found - ${pathParts[0]}!")
+            }
+        } else{
+            if(existingNode){
+                if(existingNode instanceof Directory){
+                    (existingNode as Directory).deleteNode(pathParts[1..-1])
+                } else{
+                    throw new Exception("${pathParts[0]} isn't a directory!")
+                }
+            } else{
+                throw new Exception("File not found!")
+            }
+        }
+    }
+
     public File getFile(List<String> pathParts){
         FileSystemNode existingNode = contents.find { it.name == pathParts[0] }
 

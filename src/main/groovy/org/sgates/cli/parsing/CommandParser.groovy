@@ -6,6 +6,8 @@ import org.sgates.cli.datastructure.Flag
 import org.sgates.cli.os.CommandRegistry
 
 class CommandParser{
+    CommandRegistry commandRegistry
+
     static{
         List.metaClass.lookAhead = {->
             try{return delegate[-2]} catch(e){}
@@ -26,7 +28,10 @@ class CommandParser{
 	private parse(List tokens){
         def rawStack = tokens.reverse()
         String exeName = rawStack.pop()
-        Command command = CommandRegistry.getCommandByName(exeName)
+        Command command = commandRegistry.getCommandByName(exeName)
+        if(!command){
+            throw new Exception("Command not found: ${exeName}")
+        }
 		while(!rawStack.isEmpty()){
             String currentToken = rawStack.pop()
             if(currentToken.startsWith("-")){                //flag

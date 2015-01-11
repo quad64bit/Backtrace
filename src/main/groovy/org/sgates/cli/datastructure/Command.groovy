@@ -1,10 +1,14 @@
 package org.sgates.cli.datastructure
 
+import org.sgates.cli.os.Kernel
+
 abstract class Command{
 	String name
 	String description
     String manPage
 	List<Flag> flags = []
+    Kernel kernel
+
 
     String toString(){
         String commandString = "$name"
@@ -14,5 +18,5 @@ abstract class Command{
         commandString
     }
 
-    abstract String execute()
+    abstract String execute(Map params)
 }
