@@ -1,24 +1,49 @@
 package org.sgates.cli
 
-import org.sgates.cli.datastructure.Command
+import org.sgates.cli.gui.event.TerminalEventListener
+import org.sgates.cli.gui.TerminalGUI
 import org.sgates.cli.os.Kernel
 import org.sgates.cli.util.StringTools as ST
+import groovy.swing.SwingBuilder
+
+import javax.swing.JFrame
+import java.awt.Frame
 
 class Console{
     Kernel kernel
+    private Frame window
+    private SwingBuilder swingBuilder
+    private TerminalGUI terminalGUI
+    private TerminalEventListener terminalEventListener
+    String currentLine = ""
 
-    boolean skipBoot = true
+    boolean skipBoot = false
 
     void display(){
-        def reader = getReader()
-        bootProcess()
+//        def reader = getReader()
+//        bootProcess()
+//
+//        while(true){
+//            print getCommandPrompt()
+//            String input = reader.readLine()
+//            Command command = kernel.commandParser.getCommand(input)
+//            command.execute()
+//        }
 
-        while(true){
-            print getCommandPrompt()
-            String input = reader.readLine()
-            Command command = kernel.commandParser.getCommand(input)
-            command.execute()
+        swingBuilder = new SwingBuilder()
+        terminalEventListener = new TerminalEventListener(console: this)
+
+        swingBuilder.edt {
+            window = frame(title:'Backtrace', show: true, defaultCloseOperation: JFrame.EXIT_ON_CLOSE) {
+                terminalGUI = new TerminalGUI()
+                widget(terminalGUI)
+            }
+            terminalEventListener.canvas = terminalGUI
+            window.addKeyListener(terminalEventListener)
         }
+
+        window.pack()
+        window.setLocationRelativeTo(null)
     }
 
     private getReader(){
