@@ -1,7 +1,7 @@
 package org.sgates.cli
 
 import org.sgates.cli.gui.event.TerminalEventListener
-import org.sgates.cli.gui.TerminalGUI
+import org.sgates.cli.gui.ConsoleGUI
 import org.sgates.cli.os.Kernel
 import org.sgates.cli.util.StringTools as ST
 import groovy.swing.SwingBuilder
@@ -13,11 +13,15 @@ class Console{
     Kernel kernel
     private Frame window
     private SwingBuilder swingBuilder
-    private TerminalGUI terminalGUI
+    private ConsoleGUI terminalGUI
     private TerminalEventListener terminalEventListener
     String currentLine = ""
-
     boolean skipBoot = false
+    org.sgates.cli.Console callback
+
+    {
+        callback = this
+    }
 
     void display(){
 //        def reader = getReader()
@@ -35,7 +39,8 @@ class Console{
 
         swingBuilder.edt {
             window = frame(title:'Backtrace', show: true, defaultCloseOperation: JFrame.EXIT_ON_CLOSE) {
-                terminalGUI = new TerminalGUI()
+                terminalGUI = new ConsoleGUI(console:callback)
+                terminalGUI.init()
                 widget(terminalGUI)
             }
             terminalEventListener.canvas = terminalGUI

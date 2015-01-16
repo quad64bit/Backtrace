@@ -19,7 +19,8 @@ class TraceTrackerPanel extends TertiaryPanel{
 
     @Override
     void renderForeground(Graphics2D g) {
-
+        g.setColor(Color.blue)
+        g.drawString("Time: ${System.currentTimeMillis()}", 20, 50)
     }
 
     @Override

@@ -17,7 +17,8 @@ class ProcessViewerPanel extends SecondaryPanel{
     }
 
     void renderForeground(Graphics2D g) {
-
+        g.setColor(Color.green)
+        g.drawString("Time: ${System.currentTimeMillis()}", 20, 50)
     }
 
     void renderOverlay(Graphics2D g) {

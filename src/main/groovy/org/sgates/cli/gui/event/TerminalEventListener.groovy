@@ -42,7 +42,7 @@ class TerminalEventListener implements KeyListener{
             case KE.VK_TAB: break
         }
 
-        println console.currentLine
+//        println console.currentLine
         canvas.repaint()
 
 //        if (e.getKeyCode() == KeyEvent.VK_ENTER) {

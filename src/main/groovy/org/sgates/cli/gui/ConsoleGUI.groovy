@@ -13,15 +13,24 @@ import java.awt.Graphics2D
 /**
  * Created by sgates on 1/11/15.
  */
-class TerminalGUI extends JPanel{
+class ConsoleGUI extends JPanel{
     {
         this.setPreferredSize(Global.WINDOW_SIZE)
         this.setSize(Global.WINDOW_SIZE)
+
+        terminalPanel = new TerminalPanel()
+        processViewerPanel = new ProcessViewerPanel()
+        traceTrackerPanel = new TraceTrackerPanel()
     }
 
-    TerminalPanel terminalPanel = new TerminalPanel()
-    ProcessViewerPanel processViewerPanel = new ProcessViewerPanel()
-    TraceTrackerPanel traceTrackerPanel = new TraceTrackerPanel()
+    TerminalPanel terminalPanel
+    ProcessViewerPanel processViewerPanel
+    TraceTrackerPanel traceTrackerPanel
+    org.sgates.cli.Console console
+
+    public void init(){
+        terminalPanel.console = console
+    }
 
     @Override
     public void paintComponent(Graphics graphics){
