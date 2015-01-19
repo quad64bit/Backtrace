@@ -2,78 +2,121 @@ package org.sgates.cli
 
 import org.sgates.cli.gui.event.TerminalEventListener
 import org.sgates.cli.gui.ConsoleGUI
+import org.sgates.cli.gui.panel.structure.Printable
+import org.sgates.cli.os.CommandHistory
 import org.sgates.cli.os.Kernel
-import org.sgates.cli.util.StringTools as ST
 import groovy.swing.SwingBuilder
 
 import javax.swing.JFrame
 import java.awt.Frame
+import javax.swing.Timer
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 
 class Console{
     Kernel kernel
     private Frame window
     private SwingBuilder swingBuilder
-    private ConsoleGUI terminalGUI
+    private ConsoleGUI consoleGUI
     private TerminalEventListener terminalEventListener
     String currentLine = ""
+    int insertionPoint = 0
     boolean skipBoot = false
     org.sgates.cli.Console callback
+    CommandHistory commandHistory
 
     {
         callback = this
+        commandHistory = new CommandHistory()
+    }
+
+    void clearCurrentLine(){
+        currentLine = ""
+        insertionPoint = 0
     }
 
     void display(){
-//        def reader = getReader()
-//        bootProcess()
-//
-//        while(true){
-//            print getCommandPrompt()
-//            String input = reader.readLine()
-//            Command command = kernel.commandParser.getCommand(input)
-//            command.execute()
-//        }
-
         swingBuilder = new SwingBuilder()
         terminalEventListener = new TerminalEventListener(console: this)
 
         swingBuilder.edt {
             window = frame(title:'Backtrace', show: true, defaultCloseOperation: JFrame.EXIT_ON_CLOSE) {
-                terminalGUI = new ConsoleGUI(console:callback)
-                terminalGUI.init()
-                widget(terminalGUI)
+                consoleGUI = new ConsoleGUI(console:callback)
+                consoleGUI.init()
+                widget(consoleGUI)
             }
-            terminalEventListener.canvas = terminalGUI
-            window.addKeyListener(terminalEventListener)
+            terminalEventListener.canvas = consoleGUI
         }
 
         window.pack()
         window.setLocationRelativeTo(null)
+        //Wait for GUI to load, then boot.
+        bootProcess()
+        window.addKeyListener(terminalEventListener)
+
+        Timer refresh = new Timer(16, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                window.repaint();
+            }
+        });
+        refresh.start()
     }
 
-    private getReader(){
-        new BufferedReader(new InputStreamReader(System.in))
+    public void delayedPrint(String input, Long delay=Global.DEFAULT_PRINT_DELAY){
+        Thread.sleep(delay)
+        print input
+    }
+
+    public void delayedPrint(Collection elements, Long delay=Global.DEFAULT_PRINT_DELAY){
+        elements.each { element ->
+            Thread.sleep(delay)
+            print element
+        }
+    }
+
+    public delayedPrintln(String input, Long delay=Global.DEFAULT_PRINT_DELAY){
+        Thread.sleep(delay)
+        println input
+    }
+
+    public delayedPrintln(Collection elements, Long delay=Global.DEFAULT_PRINT_DELAY){
+        elements.each { element ->
+            Thread.sleep(delay)
+            println element
+        }
+    }
+
+    public void println(String text, Printable panel = consoleGUI.terminalPanel){
+        panel.println(text)
+        consoleGUI.repaint()
+    }
+
+    public void print(String text, Printable panel = consoleGUI.terminalPanel){
+        panel.print(text)
+        consoleGUI.repaint()
     }
 
     private void bootProcess(){
         if(skipBoot){ return }
-        ST.delayedPrint(['> Bootloader initializing'] + getDots(ran()))
-        println()
-        ST.delayedPrint(['> Scanning for devices on IO Subsystem'] + getDots(ran()))
-        println()
-        ST.delayedPrint(['> Loading kernel into primary memory'] + getDots(ran()))
-        println()
-        ST.delayedPrint(['> Loading application layer'] + getDots(ran()))
-        println()
-        ST.delayedPrint(['> Initiating network connections'] + getDots(ran()))
-        println()
-        ST.delayedPrint(['> Establishing encrypted link'] + getDots(ran()))
-        println()
-        ST.delayedPrintln("> OS Loaded")
-        println()
-        ST.delayedPrintln("                 >> Welcome to <<")
-        println()
-        ST.delayedPrintln(getBanner())
+        Thread.sleep(2000) // TODO figure out a better way to do this -- can we be notified when the GUI is all loaded?
+        delayedPrint(['> Bootloader initializing'] + getDots(ran()))
+        println ""
+        delayedPrint(['> Scanning for devices on IO Subsystem'] + getDots(ran()))
+        println ""
+        delayedPrint(['> Loading kernel into primary memory'] + getDots(ran()))
+        println ""
+        delayedPrint(['> Loading application layer'] + getDots(ran()))
+        println ""
+        delayedPrint(['> Initiating network connections'] + getDots(ran()))
+        println ""
+        delayedPrint(['> Establishing encrypted link'] + getDots(ran()))
+        println ""
+        delayedPrint("> OS Loaded")
+        println ""
+        delayedPrint("                 >> Welcome to <<")
+        println ""
+        delayedPrintln(getBanner())
     }
 
     Random random = new Random()
@@ -86,22 +129,13 @@ class Console{
         ("."*dotCount).split('')
     }
 
-    private String getBanner(){
+    private static String getBanner(){
 '''\
- ██████╗ ███████╗     ██████╗ ██████╗ ██████╗ ███████╗
-██╔═══██╗██╔════╝    ██╔════╝██╔═══██╗██╔══██╗██╔════╝
-██║   ██║███████╗    ██║     ██║   ██║██████╔╝█████╗
-██║   ██║╚════██║    ██║     ██║   ██║██╔══██╗██╔══╝
-╚██████╔╝███████║    ╚██████╗╚██████╔╝██║  ██║███████╗
- ╚═════╝ ╚══════╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+ ██████  ███████      ██████  ██████  ██████  ███████ 
+██    ██ ██          ██      ██    ██ ██   ██ ██      
+██    ██ ███████     ██      ██    ██ ██████  █████ 
+██    ██      ██     ██      ██    ██ ██   ██ ██    
+ ██████  ███████      ██████  ██████  ██   ██ ███████
 '''
-    }
-
-    private String getCommandPrompt(){
-        "\n\$ "
-    }
-
-    private void echo(String output){
-        println "> $output"
     }
 }

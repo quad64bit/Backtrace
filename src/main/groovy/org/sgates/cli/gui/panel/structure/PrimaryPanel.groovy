@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 /**
  * Created by sgates on 1/13/15.
  */
-abstract class PrimaryPanel extends GenericPanel{
+abstract class PrimaryPanel extends GenericPanel implements Printable{
     {
         canvas = new BufferedImage(682, 768, BufferedImage.TYPE_INT_RGB)
         offset = new Offset(0,0)

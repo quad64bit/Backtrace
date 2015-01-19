@@ -23,10 +23,14 @@ class TerminalEventListener implements KeyListener{
         int code = e.getKeyCode();
 
         switch(code){
-            case KE.VK_ENTER: break
+            case KE.VK_ENTER:
+                console.commandHistory.add("\$ "+console.currentLine)
+                console.clearCurrentLine()
+                break
             case KE.VK_SPACE:
             case 43..126: // text
                 console.currentLine += e.getKeyChar()
+                console.insertionPoint++
                 break
             case KE.VK_BACK_SPACE:
                 if (console.currentLine.length() > 1) {
@@ -37,12 +41,21 @@ class TerminalEventListener implements KeyListener{
                 break
             case KE.VK_UP: break
             case KE.VK_DOWN: break
-            case KE.VK_LEFT: break
-            case KE.VK_RIGHT: break
+            case KE.VK_LEFT:
+                if(console.insertionPoint > 0) {
+                    console.insertionPoint--
+                }
+                break
+            case KE.VK_RIGHT:
+                if(console.insertionPoint < console.currentLine.size()) {
+                    console.insertionPoint++
+                }
+                break
             case KE.VK_TAB: break
         }
 
 //        println console.currentLine
+//        println console.insertionPoint
         canvas.repaint()
 
 //        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
