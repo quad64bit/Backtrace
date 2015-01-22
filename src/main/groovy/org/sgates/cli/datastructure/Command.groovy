@@ -7,8 +7,8 @@ abstract class Command{
 	String description
     String manPage
 	List<Flag> flags = []
+    List<Argument> arguments = []
     Kernel kernel
-
 
     String toString(){
         String commandString = "$name"
@@ -19,4 +19,8 @@ abstract class Command{
     }
 
     abstract String execute(Map params)
+
+    protected println(toPrint){
+        kernel.console.println toPrint.toString()
+    }
 }

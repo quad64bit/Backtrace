@@ -17,9 +17,7 @@ class Ls extends Command{
             println fsn.toString()
         }
         println "[${pwd.contents.size()}] items"
-    }
 
-    private println(toPrint){
-        kernel.console.println toPrint.toString()
+        println "-----------------------------------------"
     }
 }

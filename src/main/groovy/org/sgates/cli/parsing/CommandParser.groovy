@@ -32,15 +32,20 @@ class CommandParser{
         if(!command){
             throw new Exception("Command not found: ${exeName}")
         }
+        String lastPart = ""
 		while(!rawStack.isEmpty()){
             String currentToken = rawStack.pop()
             if(currentToken.startsWith("-")){                //flag
                 Flag flag = new Flag(name:currentToken)
                 command.flags << flag
-            } else{                                          //argument
+            } else if(lastPart.startsWith("-")){                                          //argument
                 Argument argument = new Argument(name:currentToken)
                 command.flags.last().argument = argument
+            } else{
+                Argument argument = new Argument(name:currentToken)
+                command.arguments << argument
             }
+            lastPart = currentToken
         }
         command
 	}

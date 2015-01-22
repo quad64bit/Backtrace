@@ -18,10 +18,13 @@ class Directory extends FileSystemNode{
     }
 
     public String getPath(){
-        if(parent){
-            return parent.getPath()+"/$name"
+        if(!parent.parent){ // in the root
+            return "/$name/"
         }
-        name
+        if(parent){ //Otherwise, deeper than root
+            return parent.getPath()+"$name/"
+        }
+        "$name/"
     }
 
     public void deleteNode(List<String> pathParts){
@@ -145,6 +148,7 @@ class Directory extends FileSystemNode{
 
     @Override
     String toString(){
+        if(name == "/"){ return name }
         "$name/"
     }
 }

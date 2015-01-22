@@ -45,11 +45,11 @@ class BtConsole {
                 consoleGUI.init()
                 widget(consoleGUI)
             }
+            window.pack()
+            window.setLocationRelativeTo(null)
             terminalEventListener.canvas = consoleGUI
         }
 
-        window.pack()
-        window.setLocationRelativeTo(null)
         //Wait for GUI to load, then boot.
         bootProcess()
         window.addKeyListener(terminalEventListener)
