@@ -30,15 +30,26 @@ class TerminalEventListener implements KeyListener{
                 break
             case KE.VK_SPACE:
             case 43..126: // text
-                console.currentLine += e.getKeyChar()
+                if(console.currentLine.length() > 0 && console.insertionPoint < console.currentLine.length()) {
+                    StringBuffer sb = new StringBuffer(console.currentLine)
+                    sb.insert(console.insertionPoint, e.getKeyChar())
+                    console.currentLine = sb.toString()
+                } else{
+                    console.currentLine += e.getKeyChar()
+                }
                 console.insertionPoint++
                 break
             case KE.VK_BACK_SPACE:
                 if (console.currentLine.length() > 1) {
-                    console.currentLine = console.currentLine[0..-2];
+                    StringBuffer sb = new StringBuffer(console.currentLine)
+                    if(console.insertionPoint-1 >= 0){
+                        sb.deleteCharAt(console.insertionPoint-1)
+                    }
+                    console.currentLine = sb.toString()
                 } else{
                     console.currentLine = ""
                 }
+                console.insertionPoint = console.insertionPoint > 0 ? console.insertionPoint - 1 : 0
                 break
             case KE.VK_UP: break
             case KE.VK_DOWN: break

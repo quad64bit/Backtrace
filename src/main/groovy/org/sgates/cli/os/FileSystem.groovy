@@ -40,6 +40,9 @@ class FileSystem {
         switch(path){
             case "/": return root; break
             case ".": return pwd; break
+            case "..":
+            case "../":
+                return pwd.parent ?: root
             default:
                 if(pathParts[0] == "/"){
                     return root.getDirectory(pathParts[1..-1])

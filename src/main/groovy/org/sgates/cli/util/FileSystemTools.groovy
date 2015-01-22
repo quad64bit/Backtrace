@@ -5,10 +5,10 @@ package org.sgates.cli.util
  */
 class FileSystemTools {
     static getPathParts(String path){
+        if(path in [".", "..", "../", "/"]){
+            return [path]
+        }
         if(path.startsWith("/")){ //absolute
-            if(path == "/"){
-                return ["/"]
-            }
             def parts = path.split("/")
             parts[0] = "/"
             return parts
