@@ -1,6 +1,6 @@
 package org.sgates.cli.gui.event
 
-import org.sgates.cli.Console
+import org.sgates.cli.BtConsole
 
 import javax.swing.JPanel
 import java.awt.event.KeyEvent as KE
@@ -11,7 +11,7 @@ import java.awt.event.KeyListener
  */
 class TerminalEventListener implements KeyListener{
     JPanel canvas
-    Console console
+    BtConsole console
 
     @Override
     void keyTyped(KE e) {
@@ -25,6 +25,7 @@ class TerminalEventListener implements KeyListener{
         switch(code){
             case KE.VK_ENTER:
                 console.commandHistory.add("\$ "+console.currentLine)
+                console.kernel.commandParser.getCommand(console.currentLine).execute()
                 console.clearCurrentLine()
                 break
             case KE.VK_SPACE:

@@ -13,7 +13,7 @@ import javax.swing.Timer
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 
-class Console{
+class BtConsole {
     Kernel kernel
     private Frame window
     private SwingBuilder swingBuilder
@@ -21,8 +21,8 @@ class Console{
     private TerminalEventListener terminalEventListener
     String currentLine = ""
     int insertionPoint = 0
-    boolean skipBoot = false
-    org.sgates.cli.Console callback
+    boolean skipBoot = true
+    BtConsole callback
     CommandHistory commandHistory
 
     {
@@ -54,7 +54,7 @@ class Console{
         bootProcess()
         window.addKeyListener(terminalEventListener)
 
-        Timer refresh = new Timer(16, new ActionListener() {
+        Timer refresh = new Timer(30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 window.repaint();

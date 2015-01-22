@@ -14,8 +14,12 @@ class Ls extends Command{
         println "./"
         println "../"
         pwd.contents.each{ FileSystemNode fsn ->
-            println fsn
+            println fsn.toString()
         }
         println "[${pwd.contents.size()}] items"
+    }
+
+    private println(toPrint){
+        kernel.console.println toPrint.toString()
     }
 }

@@ -1,5 +1,6 @@
 package org.sgates.cli.os
 
+import org.sgates.cli.BtConsole
 import org.sgates.cli.parsing.CommandParser
 
 /**
@@ -9,4 +10,5 @@ class Kernel {
     FileSystem      fileSystem
     CommandParser   commandParser
     CommandRegistry commandRegistry
+    BtConsole console
 }

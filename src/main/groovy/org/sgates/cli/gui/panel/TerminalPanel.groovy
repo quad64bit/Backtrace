@@ -1,5 +1,6 @@
 package org.sgates.cli.gui.panel
 
+import org.sgates.cli.BtConsole
 import org.sgates.cli.Global
 import org.sgates.cli.gui.panel.structure.PrimaryPanel
 
@@ -12,7 +13,7 @@ import java.awt.RenderingHints
  */
 class TerminalPanel extends PrimaryPanel{
     private Color backgroundColor = Color.BLACK
-    org.sgates.cli.Console console
+    BtConsole console
 
     void renderBackground(Graphics2D g){
         g.setColor(backgroundColor)

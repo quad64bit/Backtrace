@@ -8,8 +8,10 @@ import org.sgates.cli.os.Kernel;
  */
 public class Main {
     public static void main(String[] args){
-        Console console = new Console();
-        console.setKernel(BootLoader.boot());
+        BtConsole console = new BtConsole();
+        Kernel kernel = BootLoader.boot();
+        kernel.setConsole(console);
+        console.setKernel(kernel);
         console.display();
     }
 }

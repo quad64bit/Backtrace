@@ -1,5 +1,6 @@
 package org.sgates.cli.gui
 
+import org.sgates.cli.BtConsole
 import org.sgates.cli.Global
 import org.sgates.cli.gui.panel.ProcessViewerPanel
 import org.sgates.cli.gui.panel.TerminalPanel
@@ -26,7 +27,7 @@ class ConsoleGUI extends JPanel{
     TerminalPanel terminalPanel
     ProcessViewerPanel processViewerPanel
     TraceTrackerPanel traceTrackerPanel
-    org.sgates.cli.Console console
+    BtConsole console
 
     public void init(){
         terminalPanel.console = console
