@@ -14,6 +14,11 @@ class Touch extends Command{
             kernel.fileSystem.createFile(argument.name)
         }
 
-        println "-----------------------------------------"
+        printDivider()
+    }
+
+    @Override
+    String kill() {
+        return null
     }
 }

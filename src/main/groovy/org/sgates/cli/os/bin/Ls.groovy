@@ -18,6 +18,11 @@ class Ls extends Command{
         }
         println "[${pwd.contents.size()}] items"
 
-        println "-----------------------------------------"
+        printDivider()
+    }
+
+    @Override
+    String kill() {
+        return null
     }
 }

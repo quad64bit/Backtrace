@@ -9,6 +9,7 @@ abstract class Command{
 	List<Flag> flags = []
     List<Argument> arguments = []
     Kernel kernel
+    long pid
 
     String toString(){
         String commandString = "$name"
@@ -20,7 +21,13 @@ abstract class Command{
 
     abstract String execute(Map params)
 
+    abstract String kill()
+
     protected println(toPrint){
         kernel.console.println toPrint?.toString()
+    }
+
+    protected printDivider(){
+        kernel.console.println "-----------------------------------------"
     }
 }

@@ -1,14 +1,14 @@
-package org.sgates.cli.os.bin
+package org.sgates.cli.os.bin.test
 
 import org.sgates.cli.datastructure.Command
 
 /**
- * Created by sgates on 1/21/15.
+ * Created by sgates on 1/22/15.
  */
-class Pwd extends Command{
+class LongProcess extends Command{
     @Override
     String execute(Map params) {
-        println kernel.fileSystem.pwd.getPath()
+        kernel.processMonitor.addProcess(this)
         printDivider()
     }
 

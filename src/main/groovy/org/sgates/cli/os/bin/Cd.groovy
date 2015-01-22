@@ -17,5 +17,11 @@ class Cd extends Command{
         } else{
             println "$path does not exist"
         }
+        printDivider()
+    }
+
+    @Override
+    String kill() {
+        return null
     }
 }

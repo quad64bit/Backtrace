@@ -30,7 +30,7 @@ class CommandParser{
         String exeName = rawStack.pop()
         Command command = commandRegistry.getCommandByName(exeName)
         if(!command){
-            throw new Exception("Command not found: ${exeName}")
+            return null
         }
         String lastPart = ""
 		while(!rawStack.isEmpty()){

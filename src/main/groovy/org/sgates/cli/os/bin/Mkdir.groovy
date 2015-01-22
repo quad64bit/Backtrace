@@ -15,6 +15,11 @@ class Mkdir extends Command{
             kernel.fileSystem.createDirectory(arg.name)
         }
 
-        println "-----------------------------------------"
+        printDivider()
+    }
+
+    @Override
+    String kill() {
+        return null
     }
 }

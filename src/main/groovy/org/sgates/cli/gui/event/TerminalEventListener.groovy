@@ -1,6 +1,7 @@
 package org.sgates.cli.gui.event
 
 import org.sgates.cli.BtConsole
+import org.sgates.cli.datastructure.Command
 
 import javax.swing.JPanel
 import java.awt.event.KeyEvent as KE
@@ -25,7 +26,13 @@ class TerminalEventListener implements KeyListener{
         switch(code){
             case KE.VK_ENTER:
                 console.commandHistory.add("\$ "+console.currentLine)
-                console.kernel.commandParser.getCommand(console.currentLine).execute()
+                Command command = console.kernel.commandParser.getCommand(console.currentLine)
+                if(!command){
+                    console.println("Command not found: ${console.currentLine}")
+                    console.clearCurrentLine()
+                    return
+                }
+                command.execute()
                 console.clearCurrentLine()
                 break
             case KE.VK_SPACE:

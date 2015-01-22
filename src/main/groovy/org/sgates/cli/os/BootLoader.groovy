@@ -12,6 +12,7 @@ class BootLoader {
         kernel.fileSystem = loadFileSystem()
         kernel.commandRegistry = commandRegistry
         kernel.commandParser = initCommandParser(commandRegistry)
+        kernel.processMonitor = new ProcessMonitor(kernel:kernel)
         kernel
     }
 
