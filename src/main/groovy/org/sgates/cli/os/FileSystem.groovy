@@ -26,6 +26,7 @@ class FileSystem {
     }
 
     Directory createDirectory(String path){
+        println "creating directory ${path}"
         List<String> pathParts = FST.getPathParts(path)
         if(pathParts[0] == "/"){
             root.mkdir(pathParts[1..-1])

@@ -27,21 +27,23 @@ class TerminalPanel extends PrimaryPanel{
 
     void renderOverlay(Graphics2D g){
         consoleText(g)
+        int pathSize = console.kernel.fileSystem.pwd.getPath().length()
         if(("${System.currentTimeMillis()}"[10..-1] as int) > 500) {
-            g.drawString((" " * (console.insertionPoint + 2)) + "█", 20, canvas.height - 20)
+            g.drawString((" " * (console.insertionPoint + pathSize + 3)) + "█", 20, canvas.height - 20)
         }
     }
 
     private void renderHistory(Graphics2D g){
         consoleText(g)
         console.commandHistory.recent.eachWithIndex{ line, index ->
-            g.drawString(line, 20, 30+ 24*index)
+            g.drawString(line, 20, 30 + 24*index)
         }
     }
 
     private void renderPrompt(Graphics2D g){
         consoleText(g)
-        g.drawString("\$ ${console?.currentLine}", 20, canvas.height - 20)
+        String path = console.kernel.fileSystem.pwd.getPath()
+        g.drawString("$path \$ ${console?.currentLine}", 20, canvas.height - 20)
     }
 
     private void consoleText(Graphics2D g){

@@ -18,13 +18,13 @@ class Directory extends FileSystemNode{
     }
 
     public String getPath(){
-        if(!parent.parent){ // in the root
-            return "/$name/"
+        if(parent?.name == "/"){
+            return "/$name"
+        } else if(parent){
+            return "${parent.getPath()}/$name"
+        } else{
+            return "/"
         }
-        if(parent){ //Otherwise, deeper than root
-            return parent.getPath()+"$name/"
-        }
-        "$name/"
     }
 
     public void deleteNode(List<String> pathParts){

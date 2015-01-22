@@ -21,6 +21,6 @@ abstract class Command{
     abstract String execute(Map params)
 
     protected println(toPrint){
-        kernel.console.println toPrint.toString()
+        kernel.console.println toPrint?.toString()
     }
 }

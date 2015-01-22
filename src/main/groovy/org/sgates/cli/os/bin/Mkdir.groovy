@@ -11,6 +11,7 @@ class Mkdir extends Command{
     @Override
     String execute(Map params) {
         arguments.each{ Argument arg ->
+            println "mkdir ${arg.name}"
             kernel.fileSystem.createDirectory(arg.name)
         }
 

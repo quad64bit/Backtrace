@@ -13,6 +13,7 @@ class Cd extends Command{
         def destDir = kernel.fileSystem.getDirectory(path)
         if(destDir){
             kernel.fileSystem.setPwd(destDir)
+            println "setting pwd to ${destDir}"
         } else{
             println "$path does not exist"
         }

@@ -11,11 +11,11 @@ class CommandRegistry {
     Kernel kernel
 
     public init(){
-        commands["ls"] = new Ls(name:"ls")
-        commands["mkdir"] = new Mkdir(name:"mkdir")
-        commands["touch"] = new Touch(name:"touch")
-        commands["cd"] = new Cd(name:"cd")
-        commands["pwd"] = new Pwd(name:"pwd")
+        commands["ls"]      = {new Ls(name:"ls", kernel: kernel)}
+        commands["mkdir"]   = {new Mkdir(name:"mkdir", kernel: kernel)}
+        commands["touch"]   = {new Touch(name:"touch", kernel: kernel)}
+        commands["cd"]      = {new Cd(name:"cd", kernel: kernel)}
+        commands["pwd"]     = {new Pwd(name:"pwd", kernel: kernel)}
 
         commands.each{ name, Command command ->
             command.kernel = kernel
@@ -24,6 +24,6 @@ class CommandRegistry {
     }
 
     Command getCommandByName(String name){
-        commands[name]
+        commands[name]()
     }
 }
